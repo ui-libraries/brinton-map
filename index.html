@@ -6,63 +6,92 @@ Ethan DeGross, Web Developer at University of Iowa Libraries
 Meghan Saak, Junior Web Developer at University of Iowa Libraries
 Thanks to University of Iowa's Digital Scholarship and Publishing Studio for hosting the content
 -->
-<html>
+<html lang="en">
 
 <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Brinton Map: Brinton Show Dates and Locations, 1904–1908</title>
+  <meta name="description" content="An interactive map and sortable data table of Brinton show dates, venues, and receipts, 1904–1908.">
 
-  <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
-  <link href='https://api.mapbox.com/mapbox-assembly/v0.8.0/assembly.min.css' rel='stylesheet'>
-<!--Don't need mapbox.css?
-  <link href='https://api.mapbox.com/mapbox.js/v3.0.1/mapbox.css' rel='stylesheet'>
--->
-  <link rel="stylesheet" href="https://code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css" type="text/css">
-  <!--link rel="stylesheet" href="public/leaflet-1/leaflet.css" /-->
-
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.10.2/css/all.css">
-  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.10.2/css/v4-shims.css">
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.3/dist/leaflet.css">
-  <!--leaflet tag filter buttons from: https://github.com/maydemirx/leaflet-tag-filter-button-->
-  <link rel="stylesheet" href="src/leaflet-tag-filter-button.css">
-  <link rel="stylesheet" href="src/easy-button.css">
+  <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
   <link rel="stylesheet" href="index.css">
-
 </head>
 
 <body>
+  <a class="skip-link" href="#filters-heading">Skip to filters</a>
+  <a class="skip-link" href="#table-heading">Skip map, go to data table</a>
 
-  <!-- provide the map with a div to live inside -->
-  <div class="leaflet-map" id="map"></div>
-  <!-- end map -->
+  <header class="site-header">
+    <h1>Brinton Show Map</h1>
+    <p>Brinton show dates, venues, and receipts, 1904–1908. Use the date slider and filters to choose which
+      shows appear. The same shows are listed in the <a href="#table-heading">data table</a> below the map.</p>
+  </header>
 
-  <!-- ui slider -->
-  <div id='slider' class='range w300 round py6 border border--2 border--darken50 px12 leaflet-control'>
-    <input type='range' min="2416480" max="2418294" value="2416480" step="1" class="slider" />
-  </div>
-  <!-- end slider -->
+  <main class="layout">
+    <aside class="controls" aria-labelledby="filters-heading">
+      <h2 id="filters-heading">Date and filters</h2>
 
-  <!-- temporal legend -->
-  <div id='temporal' class='py6 px12 border border--2 border--darken50 round bottom left wmax200'>
-    <h3 class='txt-bold'>Date: <span></span></h3>
-  </div>
-  <!-- end temporal -->
+      <div class="date-control">
+        <label for="date-slider">Show performances through:
+          <output id="date-output" for="date-slider" class="date-output"></output></label>
+        <input type="range" id="date-slider" min="2416480" max="2418294" value="2416480" step="1">
+        <p class="hint" id="date-hint">Arrow keys move one day. Page Up and Page Down move about 10 percent
+          of the range. Home and End jump to the first and last dates.</p>
+        <button type="button" id="show-all-dates">Show all dates</button>
+      </div>
 
-  <!-- filters title -->
-  <div id='info_text' class='py6 px12 round top left wmax200'>
-    <h4 class='txt-bold'>Filters:</h4>
-  </div>
-  <!-- end filters title -->
+      <div id="filter-groups" class="filter-groups"></div>
 
-  <script src="https://cdn.jsdelivr.net/leaflet/1.0.0-rc.3/leaflet-src.js"></script>
-  <script src="https://code.jquery.com/jquery-1.9.1.min.js"></script>
-  <script src="https://code.jquery.com/ui/1.9.2/jquery-ui.js"></script>
-  <script src="https://d3js.org/d3.v4.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/leaflet.esri/2.0.2/esri-leaflet.js"></script>
+      <button type="button" id="clear-filters">Clear all filters</button>
 
-  <script src="src/easy-button.js"></script>
-  <script src="src/leaflet-tag-filter-button.js"></script>
+      <p id="result-count" class="result-count"></p>
+    </aside>
+
+    <section class="map-region" aria-labelledby="map-heading">
+      <h2 id="map-heading" class="sr-only">Map of show locations</h2>
+      <p id="map-instructions" class="sr-only">Interactive map. Each show is a button on the map. Press Tab to
+        move between show markers, then Enter or Space to open its details, and Escape to close them. Arrow
+        keys pan the map, plus and minus zoom. A data table with the same information follows the map.</p>
+      <div id="map" role="region" aria-labelledby="map-heading" aria-describedby="map-instructions"></div>
+      <noscript><p class="error">This map needs JavaScript. The show data is available in the project's
+        data/Brinton.geojson file.</p></noscript>
+    </section>
+  </main>
+
+  <section class="table-section" aria-labelledby="table-heading">
+    <h2 id="table-heading" tabindex="-1">Data table of shows</h2>
+    <p>This table lists the shows currently visible on the map, in date order. It updates as you change the
+      date slider or filters.</p>
+    <div class="table-wrap" tabindex="0" role="region" aria-labelledby="table-heading">
+      <table id="shows-table">
+        <caption class="sr-only">Brinton shows matching the current date and filters</caption>
+        <thead>
+          <tr>
+            <th scope="col">Date</th>
+            <th scope="col">Town</th>
+            <th scope="col">State</th>
+            <th scope="col">Venue</th>
+            <th scope="col">Amount made</th>
+            <th scope="col">House take</th>
+            <th scope="col">Notes</th>
+            <th scope="col">Map</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- Screen reader announcements (not visible) -->
+  <div id="status" class="sr-only" role="status" aria-live="polite" aria-atomic="true"></div>
+  <div id="load-error" class="error" role="alert" hidden></div>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+    integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
   <script src="index.js"></script>
-
 </body>
 
 </html>
