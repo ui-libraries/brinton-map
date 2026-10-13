@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<!-- notes
+Rob Shepard, GIS Specialist at University of Iowa Libraries
+Jay Bowen, GIS Specialist at University of Iowa Libraries
+Ethan DeGross, Web Developer at University of Iowa Libraries
+Meghan Saak, Junior Web Developer at University of Iowa Libraries
+Thanks to University of Iowa's Digital Scholarship and Publishing Studio for hosting the content
+-->
+<html>
+
+<head>
+
+  <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
+  <link href='https://api.mapbox.com/mapbox-assembly/v0.8.0/assembly.min.css' rel='stylesheet'>
+<!--Don't need mapbox.css?
+  <link href='https://api.mapbox.com/mapbox.js/v3.0.1/mapbox.css' rel='stylesheet'>
+-->
+  <link rel="stylesheet" href="https://code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css" type="text/css">
+  <!--link rel="stylesheet" href="public/leaflet-1/leaflet.css" /-->
+
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.10.2/css/all.css">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.10.2/css/v4-shims.css">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.3/dist/leaflet.css">
+  <!--leaflet tag filter buttons from: https://github.com/maydemirx/leaflet-tag-filter-button-->
+  <link rel="stylesheet" href="src/leaflet-tag-filter-button.css">
+  <link rel="stylesheet" href="src/easy-button.css">
+  <link rel="stylesheet" href="index.css">
+
+</head>
+
+<body>
+
+  <!-- provide the map with a div to live inside -->
+  <div class="leaflet-map" id="map"></div>
+  <!-- end map -->
+
+  <!-- ui slider -->
+  <div id='slider' class='range w300 round py6 border border--2 border--darken50 px12 leaflet-control'>
+    <input type='range' min="2416480" max="2418294" value="2416480" step="1" class="slider" />
+  </div>
+  <!-- end slider -->
+
+  <!-- temporal legend -->
+  <div id='temporal' class='py6 px12 border border--2 border--darken50 round bottom left wmax200'>
+    <h3 class='txt-bold'>Date: <span></span></h3>
+  </div>
+  <!-- end temporal -->
+
+  <!-- filters title -->
+  <div id='info_text' class='py6 px12 round top left wmax200'>
+    <h4 class='txt-bold'>Filters:</h4>
+  </div>
+  <!-- end filters title -->
+
+  <script src="https://cdn.jsdelivr.net/leaflet/1.0.0-rc.3/leaflet-src.js"></script>
+  <script src="https://code.jquery.com/jquery-1.9.1.min.js"></script>
+  <script src="https://code.jquery.com/ui/1.9.2/jquery-ui.js"></script>
+  <script src="https://d3js.org/d3.v4.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/leaflet.esri/2.0.2/esri-leaflet.js"></script>
+
+  <script src="src/easy-button.js"></script>
+  <script src="src/leaflet-tag-filter-button.js"></script>
+  <script src="index.js"></script>
+
+</body>
+
+</html>
