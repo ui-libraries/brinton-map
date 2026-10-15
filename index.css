@@ -244,3 +244,37 @@ tbody tr:nth-child(even) { background: #fafafa; }
   background: #fff;
   color: #1a1a1a;
 }
+
+/* ---------- map chrome contrast (WCAG 1.4.3) ----------
+   Leaflet's own rules use higher specificity, so these match or beat them. */
+.leaflet-container .leaflet-control-attribution,
+.leaflet-container .leaflet-control-scale-line,
+.leaflet-control-scale-line {
+  background: #ffffff;
+  color: #1a1a1a;
+  font-family: inherit;
+  font-size: 0.75rem;
+}
+.leaflet-container .leaflet-control-scale-line {
+  border-color: #1a1a1a;
+}
+.leaflet-container .leaflet-control-attribution a {
+  color: var(--link);
+}
+
+/* disabled zoom button (inactive, but still scanned): keep text readable */
+.leaflet-bar a.leaflet-disabled,
+.leaflet-bar a.leaflet-disabled:hover {
+  background-color: #ebebeb;
+  color: #595959;
+  cursor: not-allowed;
+}
+
+/* popup close button */
+.leaflet-container a.leaflet-popup-close-button {
+  color: #4d4d4d;
+}
+.leaflet-container a.leaflet-popup-close-button:hover,
+.leaflet-container a.leaflet-popup-close-button:focus {
+  color: #000000;
+}
