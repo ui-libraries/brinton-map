@@ -21,8 +21,10 @@ Thanks to University of Iowa's Digital Scholarship and Publishing Studio for hos
 </head>
 
 <body>
-  <a class="skip-link" href="#filters-heading">Skip to filters</a>
-  <a class="skip-link" href="#table-heading">Skip map, go to data table</a>
+  <nav aria-label="Skip links">
+    <a class="skip-link" href="#filters-heading">Skip to filters</a>
+    <a class="skip-link" href="#table-heading">Skip map, go to data table</a>
+  </nav>
 
   <header class="site-header">
     <h1>Brinton Show Map</h1>
@@ -30,7 +32,12 @@ Thanks to University of Iowa's Digital Scholarship and Publishing Studio for hos
       shows appear. The same shows are listed in the <a href="#table-heading">data table</a> below the map.</p>
   </header>
 
-  <main class="layout">
+  <main>
+  <!-- Screen reader announcements (not visible) -->
+  <div id="status" class="sr-only" role="status" aria-live="polite" aria-atomic="true"></div>
+  <div id="load-error" class="error" role="alert" hidden></div>
+
+  <div class="layout">
     <aside class="controls" aria-labelledby="filters-heading">
       <h2 id="filters-heading">Date and filters</h2>
 
@@ -59,7 +66,7 @@ Thanks to University of Iowa's Digital Scholarship and Publishing Studio for hos
       <noscript><p class="error">This map needs JavaScript. The show data is available in the project's
         data/Brinton.geojson file.</p></noscript>
     </section>
-  </main>
+  </div>
 
   <section class="table-section" aria-labelledby="table-heading">
     <h2 id="table-heading" tabindex="-1">Data table of shows</h2>
@@ -84,10 +91,7 @@ Thanks to University of Iowa's Digital Scholarship and Publishing Studio for hos
       </table>
     </div>
   </section>
-
-  <!-- Screen reader announcements (not visible) -->
-  <div id="status" class="sr-only" role="status" aria-live="polite" aria-atomic="true"></div>
-  <div id="load-error" class="error" role="alert" hidden></div>
+  </main>
 
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
     integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
